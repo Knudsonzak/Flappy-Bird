@@ -1,6 +1,6 @@
 # Flappy Bird API
 
-A REST API for tracking scores and leaderboard for the Flappy Bird game.
+A REST API for tracking scores and leaderboard for the Flappy Bird game, built with Node.js and Express.
 
 ## API Endpoints
 
@@ -22,7 +22,7 @@ Returns basic API information.
 {
   "message": "Flappy Bird API",
   "version": "1.0",
-  "endpoints": "/api/scores, /api/leaderboard, /api/player/{name}"
+  "endpoints": "/api/scores, /api/leaderboard, /api/player/:name, /api/stats"
 }
 ```
 
@@ -46,7 +46,7 @@ Submit a new game score.
   "id": 1,
   "playerName": "John",
   "score": 42,
-  "timestamp": "2026-02-03T10:30:00"
+  "timestamp": "2026-02-03T10:30:00.000Z"
 }
 ```
 
@@ -69,20 +69,20 @@ Get top 10 high scores.
     "id": 5,
     "playerName": "Alice",
     "score": 156,
-    "timestamp": "2026-02-03T11:20:00"
+    "timestamp": "2026-02-03T11:20:00.000Z"
   },
   {
     "id": 3,
     "playerName": "Bob",
     "score": 142,
-    "timestamp": "2026-02-03T10:45:00"
+    "timestamp": "2026-02-03T10:45:00.000Z"
   }
 ]
 ```
 
 #### 5. Get Player Scores
 ```
-GET /api/player/{name}
+GET /api/player/:name
 ```
 Get all scores for a specific player.
 
@@ -106,8 +106,9 @@ Get game statistics.
 ## Running Locally
 
 ### Prerequisites
-- Java 17 or higher
-- Maven 3.6+
+- Node.js 18 or higher
+- npm or yarn
+- PostgreSQL (optional - can use Render's database)
 
 ### Steps
 
@@ -116,17 +117,29 @@ Get game statistics.
    cd api
    ```
 
-2. Build the project:
+2. Install dependencies:
    ```bash
-   mvn clean install
+   npm install
    ```
 
-3. Run the application:
+3. Set up environment variables (optional for local development):
    ```bash
-   mvn spring-boot:run
+   # Create a .env file
+   DATABASE_URL=postgresql://localhost/flappybird
+   PORT=8080
    ```
 
-4. The API will be available at `http://localhost:8080`
+4. Run the application:
+   ```bash
+   npm start
+   ```
+   
+   Or for development with auto-reload:
+   ```bash
+   npm run dev
+   ```
+
+5. The API will be available at `http://localhost:8080`
 
 ## Testing the API
 
@@ -147,15 +160,52 @@ curl http://localhost:8080/api/leaderboard
 ### Using a Browser
 Simply open `http://localhost:8080/api/leaderboard` in your browser.
 
+### Using Node.js fetch (for integration with your game)
+```javascript
+// Submit a score
+const submitScore = async (playerName, score) => {
+  const response = await fetch('http://localhost:8080/api/scores', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ playerName, score })
+  });
+  return response.json();
+};
+
+// Get leaderboard
+const getLeaderboard = async () => {
+  const response = await fetch('http://localhost:8080/api/leaderboard');
+  return response.json();
+};
+```
+
 ## Database
 
-- **Development:** Uses H2 in-memory database
-- **Production:** Uses PostgreSQL (configured for Render)
+- **Production:** Uses PostgreSQL (configured automatically on Render)
+- The database table is created automatically on first run
+- Table schema:
+  ```sql
+  CREATE TABLE scores (
+    id SERIAL PRIMARY KEY,
+    player_name VARCHAR(100) NOT NULL,
+    score INTEGER NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+  ```
 
 ## Technologies Used
 
-- Spring Boot 3.2.2
-- Spring Data JPA
-- H2 Database (dev)
-- PostgreSQL (prod)
-- Maven
+- Node.js 18+
+- Express.js
+- PostgreSQL (pg driver)
+- CORS middleware
+
+## Project Structure
+
+```
+api/
+├── server.js          # Main application file
+├── package.json       # Dependencies and scripts
+├── .gitignore        # Git ignore rules
+└── README.md         # This file
+```

@@ -1,21 +1,24 @@
-# Ignore compiled class files
-target/
-*.class
+# Dependencies
+node_modules/
+package-lock.json
 
-# Ignore IDE files
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE files
+.vscode/
 .idea/
 *.iml
-.vscode/
-.project
-.classpath
-.settings/
 
-# Ignore OS files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Ignore log files
-*.log
-
-# Ignore application properties with secrets
-application-local.properties
+# Build outputs
+dist/
+build/

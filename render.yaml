@@ -1,10 +1,9 @@
 services:
   - type: web
     name: flappy-bird-api
-    runtime: java
-    buildCommand: cd api && mvn clean install
-    startCommand: cd api && java -jar target/flappy-bird-api-1.0.0.jar
-    env: java
+    runtime: node
+    buildCommand: cd api && npm install
+    startCommand: cd api && npm start
     envVars:
       - key: PORT
         value: 8080
@@ -12,10 +11,8 @@ services:
         fromDatabase:
           name: flappybird-db
           property: connectionString
-      - key: DATABASE_DRIVER
-        value: org.postgresql.Driver
-      - key: DATABASE_DIALECT
-        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: NODE_ENV
+        value: production
 
 databases:
   - name: flappybird-db

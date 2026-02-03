@@ -41,17 +41,10 @@ Flappy-Bird/
 ├── FlappyBird.java    # Main game class with game loop and rendering
 ├── Bird.java          # Bird class with physics and movement
 ├── Poles.java         # Obstacle class for pipes
-├── api/               # REST API for scores and leaderboard
-│   ├── src/
-│   │   └── main/
-│   │       ├── java/com/flappybird/api/
-│   │       │   ├── FlappyBirdApiApplication.java
-│   │       │   ├── controller/ScoreController.java
-│   │       │   ├── model/Score.java
-│   │       │   └── repository/ScoreRepository.java
-│   │       └── resources/
-│   │           └── application.properties
-│   ├── pom.xml
+├── api/               # REST API for scores and leaderboard (Node.js)
+│   ├── server.js      # Express server with all API endpoints
+│   ├── package.json   # Dependencies and scripts
+│   ├── .gitignore
 │   └── README.md      # API documentation
 ├── render.yaml        # Render deployment configuration
 └── README.md          # Project documentation
@@ -143,8 +136,13 @@ This project includes a Spring Boot REST API for managing scores and leaderboard
 
 ```bash
 cd api
-mvn clean install
-mvn spring-boot:run
+npm install
+npm start
+```
+
+For development with auto-reload:
+```bash
+npm run dev
 ```
 
 The API will be available at `http://localhost:8080`
@@ -196,13 +194,12 @@ For detailed API documentation, see [api/README.md](api/README.md)
    - Connect your repository
    - Configure:
      - **Name:** `flappy-bird-api`
-     - **Runtime:** Java
-     - **Build Command:** `cd api && mvn clean install`
-     - **Start Command:** `cd api && java -jar target/flappy-bird-api-1.0.0.jar`
+     - **Runtime:** Node
+     - **Build Command:** `cd api && npm install`
+     - **Start Command:** `cd api && npm start`
      - **Environment Variables:**
        - `DATABASE_URL` = (your database internal URL)
-       - `DATABASE_DRIVER` = `org.postgresql.Driver`
-       - `DATABASE_DIALECT` = `org.hibernate.dialect.PostgreSQLDialect`
+       - `NODE_ENV` = `production`
 
 3. **Deploy and Test:**
    - Click "Create Web Service"
