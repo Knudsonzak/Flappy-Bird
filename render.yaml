@@ -2,8 +2,9 @@ services:
   - type: web
     name: flappy-bird-api
     runtime: node
-    buildCommand: cd api && npm install
-    startCommand: cd api && npm start
+    rootDir: api
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: PORT
         value: 8080
