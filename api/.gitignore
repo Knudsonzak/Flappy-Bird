@@ -1,0 +1,21 @@
+# Ignore compiled class files
+target/
+*.class
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore application properties with secrets
+application-local.properties
